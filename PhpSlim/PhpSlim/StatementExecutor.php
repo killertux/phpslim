@@ -47,7 +47,7 @@ class PhpSlim_StatementExecutor
             return 'OK';
         } catch (PhpSlim_SlimError $e) {
             return PhpSlim::tagErrorMessage($e->getMessage());
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return $this->exceptionToString($e);
         }
     }
@@ -151,13 +151,13 @@ class PhpSlim_StatementExecutor
             if ('__call' === $method->getName()) {
                 $args = array($callback[1], $args);
             }
-            set_error_handler(array($this, 'exceptionErrorHandler'));
+            // set_error_handler(array($this, 'exceptionErrorHandler'));
             $result = $method->invokeArgs($callback[0], $args);
-            restore_error_handler();
+            // restore_error_handler();
             return $result;
         } catch (PhpSlim_SlimError $e) {
             return PhpSlim::tagErrorMessage($e->getMessage());
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return $this->exceptionToString($e);
         }
     }
@@ -264,7 +264,7 @@ class PhpSlim_StatementExecutor
         }
     }
 
-    private function exceptionToString(Exception $e)
+    private function exceptionToString(\Throwable $e)
     {
         if ($this->isStopTestException($e)) {
             $this->_stopRequested = true;
@@ -278,7 +278,7 @@ class PhpSlim_StatementExecutor
         }
     }
 
-    private function isStopTestException(Exception $e)
+    private function isStopTestException(\Throwable $e)
     {
         return (false !== strpos(get_class($e), 'StopTest'));
     }
