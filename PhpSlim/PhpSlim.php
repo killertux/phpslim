@@ -20,6 +20,7 @@ class PhpSlim
         $port = array_pop($arguments);
         $path = array_pop($arguments);
         set_include_path($path . PATH_SEPARATOR . get_include_path());
+        require_once $path;
 
         PhpSlim_AutoLoader::start();
 

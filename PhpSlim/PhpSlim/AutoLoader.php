@@ -66,7 +66,7 @@ class PhpSlim_AutoLoader
     protected static function cleanupIncludePath()
     {
         $paths = explode(PATH_SEPARATOR, get_include_path());
-        $trimmedPaths = array_map(array('self', 'trimPath'), $paths);
+        $trimmedPaths = array_map(array(self::class, 'trimPath'), $paths);
         $uniquePaths = array_unique($trimmedPaths);
         set_include_path(implode(PATH_SEPARATOR, $uniquePaths));
     }

@@ -10,7 +10,7 @@ class PhpSlim_SocketService extends PhpSlim_Socket
     private function bind()
     {
         $result = socket_bind(
-            $this->_socketResource, $this->_host, $this->_port
+            $this->_socketResource, $this->_host, (int)$this->_port
         );
         if (false === $result) {
             $this->raiseError("socket_bind() failed");

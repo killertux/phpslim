@@ -1,7 +1,7 @@
 <?php
 class CodeFilterIterator extends FilterIterator
 {
-    public function accept()
+    public function accept(): bool
     {
         $path = $this->getInnerIterator()->current()->getPath();
         return (preg_match('([/\\\\](Tests|Java)[/\\\\])', $path) === 0);
