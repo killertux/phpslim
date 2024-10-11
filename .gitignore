@@ -10,4 +10,6 @@ test-results
 .tmp*
 *~
 lib/fitnesse.jar
-
+.idea/
+vendor/
+.phpunit.result.cache

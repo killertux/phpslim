@@ -3,7 +3,7 @@ class PhpSlim_Tests_StatementTest extends PhpSlim_Tests_TestCase
 {
     private $_statement;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->_statement = new PhpSlim_StatementExecutor();
     }
@@ -11,9 +11,9 @@ class PhpSlim_Tests_StatementTest extends PhpSlim_Tests_TestCase
     public function testTranslateSlimClassNamesToPhpClassNames()
     {
         $phpClass = $this->_statement->slimToPhpClass('myPackage.MyClass');
-        $this->assertEquals('MyPackage_MyClass', $phpClass);
+        $this->assertEquals(['MyPackage\MyClass', 'MyPackage_MyClass'], $phpClass);
         $phpClass = $this->_statement->slimToPhpClass('this.that::theOther');
-        $this->assertEquals('This_That_TheOther', $phpClass);
+        $this->assertEquals(['This\That\TheOther', 'This_That_TheOther'], $phpClass);
     }
 
     public function testTranslateSlimMethodNamesToPhpMethodNames()

@@ -28,7 +28,7 @@ class PhpSlim_Server
 
     private function serveSlim()
     {
-        $this->_socket->write("Slim -- V0.3\n");
+        $this->_socket->write("Slim -- V0.4\n");
         while (true) {
             $command = $this->readCommand();
             if (strtolower($command) == 'bye') {
@@ -41,10 +41,11 @@ class PhpSlim_Server
 
     private function readCommand()
     {
-        $length = (int) $this->_socket->read(6);
-        // Skip colon
-        $this->_socket->read(1);
-        return $this->readMultibytes($length);
+        $length = '';
+        while (($data = $this->_socket->read(1)) !== ':') {
+            $length .= $data;
+        }
+        return $this->readMultibytes((int)$length);
     }
 
     /**

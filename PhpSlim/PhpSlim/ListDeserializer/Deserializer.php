@@ -52,8 +52,8 @@ class PhpSlim_ListDeserializer_Deserializer
      */
     private function getLength()
     {
-        $length = mb_substr($this->_string, $this->_pos, 6);
-        $this->_pos += 7;
+        $length = explode(':', mb_substr($this->_string, $this->_pos), 2)[0];
+        $this->_pos += mb_strlen($length) + 1;
         if (!is_numeric($length)) {
             $message = 'Wrong number format for length, read ' . $length;
             throw new PhpSlim_ListDeserializer_SyntaxError($message);

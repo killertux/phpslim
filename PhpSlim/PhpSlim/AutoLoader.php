@@ -190,7 +190,6 @@ class PhpSlim_AutoLoader
                 return $pharPath;
             }
         }
-
         if (file_exists($file)) {
             return realpath($file);
         }

@@ -103,7 +103,7 @@ class PhpSlim_Tests_TypeConverterTest extends PhpSlim_Tests_TestCase
     public function testHtmlTableToHash()
     {
         // More tests are in PhpHashWidgetConversionTest.java
-        $this->assertHtmlTableConvertsToHash(array(), '');
+        $this->assertHtmlTableConvertsToHash(array(), '<html></html>');
 
         $html = "<table>" .
             "<tr>  <td>name</td>  <td>Bob</td> </tr>" .

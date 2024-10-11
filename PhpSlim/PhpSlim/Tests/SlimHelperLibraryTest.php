@@ -7,7 +7,7 @@ class PhpSlim_Tests_SlimHelperLibraryTest extends PhpSlim_Tests_TestCase
     
     private $_executor;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->_executor = new PhpSlim_StatementExecutor();
     }

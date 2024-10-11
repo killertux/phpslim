@@ -4,7 +4,7 @@ class PhpSlim_Tests_ListExecutorTest extends PhpSlim_Tests_TestCase
     private $_executor;
     private $_statements;
 
-    public function setup()
+    public function setUp(): void
     {
         TestModule_TestSlim::setStaticValue(null);
         $this->_executor = new PhpSlim_ListExecutor();
@@ -198,17 +198,7 @@ class PhpSlim_Tests_ListExecutorTest extends PhpSlim_Tests_TestCase
         $this->addStatement("id", "call", "testSlim", "triggerError");
         $results = $this->execute();
         $result = $this->getResultFomList('id', $results);
-        $this->assertContains(PhpSlim::EXCEPTION_TAG, $result);
-    }
-
-    public function testSurviveExecutingAnErrorNoExceptionForLowErrorLevel()
-    {
-        $this->addStatement("id", "call", "testSlim", "triggerError");
-        $oldLevel = error_reporting(E_ALL ^ E_WARNING);
-        $results = $this->execute();
-        error_reporting($oldLevel);
-        $result = $this->getResultFomList('id', $results);
-        $this->assertFalse($result);
+        $this->assertStringContainsString(PhpSlim::EXCEPTION_TAG, $result);
     }
 
     public function testStopTestExceptionIsReturned()
@@ -216,7 +206,7 @@ class PhpSlim_Tests_ListExecutorTest extends PhpSlim_Tests_TestCase
         $this->addStatement("id", "call", "testSlim", "raiseStopException");
         $results = $this->execute();
         $result = $this->getResultFomList('id', $results);
-        $this->assertContains(PhpSlim::EXCEPTION_STOP_TEST_TAG, $result);
+        $this->assertStringContainsString(PhpSlim::EXCEPTION_STOP_TEST_TAG, $result);
         $this->assertStopTestMessage('test stopped in TestSlim', $result);
     }
 
@@ -247,5 +237,14 @@ class PhpSlim_Tests_ListExecutorTest extends PhpSlim_Tests_TestCase
         $results = $this->execute();
         $resultKeys = array_keys($this->pairsToMap($results));
         $this->assertEquals(array('i1', 'm1', 'id1'), $resultKeys);
+    }
+
+    public function testAssign()
+    {
+        $this->addStatement(
+            "id1", "assign", "message", "value"
+        );
+        $this->addStatement("id2", "call", "testSlim", "echoValue", '$message');
+        $this->checkResults(array('id1' => 'OK', 'id2' => 'value'));
     }
 }

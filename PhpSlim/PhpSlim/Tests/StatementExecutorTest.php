@@ -3,7 +3,7 @@ class PhpSlim_Tests_StatementExecutorTest extends PhpSlim_Tests_TestCase
 {
     private $_executor;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->_executor = new PhpSlim_StatementExecutor();
     }
@@ -34,11 +34,10 @@ class PhpSlim_Tests_StatementExecutorTest extends PhpSlim_Tests_TestCase
         $this->assertEquals('TestModule_TestSlim', $class);
     }
 
-    /**
-     * @expectedException PhpSlim_SlimError
-     */
     public function testRequireANonExistingClassWithoutModule()
     {
+        $this->expectException(PhpSlim_SlimError::class);
+        $this->expectExceptionMessage("message:<<COULD_NOT_INVOKE_CONSTRUCTOR TestSlim[0]>>");
         $this->_executor->requireClass('TestSlim');
     }
 }

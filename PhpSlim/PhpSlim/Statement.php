@@ -56,6 +56,8 @@ class PhpSlim_Statement
                 return $this->call();
             case 'callAndAssign':
                 return $this->callAndAssign();
+            case 'assign':
+                return $this->assign();
             default:
                 throw new PhpSlim_SlimError_Message(
                     sprintf(
@@ -91,6 +93,15 @@ class PhpSlim_Statement
     {
         $callback = array($this->_executor, 'callAndAssign');
         return $this->invokeAtIndex(3, $callback, array($this->getWord(2)));
+    }
+
+    private function assign() {
+        $callback = array($this->_executor, 'assign');
+        $invokeArguments = array();
+        $invokeArguments[] = $this->getWord(2);
+        $invokeArguments[] = $this->getWord(3);
+        $result = call_user_func_array($callback, $invokeArguments);
+        return $this->getExecResultRow($result);
     }
 
     private function invokeAtIndex($index, $callback, $invokeArguments)

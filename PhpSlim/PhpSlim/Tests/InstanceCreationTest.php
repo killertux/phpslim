@@ -3,7 +3,7 @@ class PhpSlim_Tests_InstanceCreationTest extends PhpSlim_Tests_TestCase
 {
     private $_caller;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->_caller = new PhpSlim_StatementExecutor();
     }

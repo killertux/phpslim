@@ -4,7 +4,7 @@ class PhpSlim_Tests_MethodInvocationTest extends PhpSlim_Tests_TestCase
     private $_executor;
     private $_testSlim;
 
-    public function setup()
+    public function setUp(): void
     {
         $executor = new PhpSlim_StatementExecutor();
         $result = $executor->create('testSlim', 'TestModule_TestSlim', array());

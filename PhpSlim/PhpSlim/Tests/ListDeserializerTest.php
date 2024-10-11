@@ -3,7 +3,7 @@ class PhpSlim_Tests_ListDeserializerTest extends PhpSlim_Tests_TestCase
 {
     private $_list;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->_list = array();
     }
@@ -22,36 +22,37 @@ class PhpSlim_Tests_ListDeserializerTest extends PhpSlim_Tests_TestCase
         $this->assertSame($string, $concat);
     }
 
-    /**
-     * @expectedException PhpSlim_ListDeserializer_SyntaxError
-     */
     public function testExceptionDeserializeNullString()
     {
+        $this->expectException(PhpSlim_ListDeserializer_SyntaxError::class);
+        $this->expectExceptionMessage("Can't deserialize null");
         $this->deserialize(null);
     }
 
-    /**
-     * @expectedException PhpSlim_ListDeserializer_SyntaxError
-     */
     public function testExceptionDeserializeEmptyString()
     {
+        $this->expectException(PhpSlim_ListDeserializer_SyntaxError::class);
+        $this->expectExceptionMessage("Can't deserialize empty string");
         $this->deserialize('');
     }
 
-    /**
-     * @expectedException PhpSlim_ListDeserializer_SyntaxError
-     */
     public function testExceptionDeserializeStringThatDoesNotStartWithABracket()
     {
+        $this->expectException(PhpSlim_ListDeserializer_SyntaxError::class);
+        $this->expectExceptionMessage("Serialized list has no starting [");
         $this->deserialize('hello');
     }
 
-    /**
-     * @expectedException PhpSlim_ListDeserializer_SyntaxError
-     */
     public function testExceptionDeserializeStringThatDoesNotEndWithABracket()
     {
+        $this->expectException(PhpSlim_ListDeserializer_SyntaxError::class);
+        $this->expectExceptionMessage("Serialized list has no ending ]");
         $this->deserialize('[000000:');
+    }
+
+    public function testStringWithLengthWithMoreThanSizCharacters()
+    {
+        $this->assertEquals(['ola'], $this->deserialize('[000001:0000000003:ola]'));
     }
 
     public function testDeserializeAnEmptyList()

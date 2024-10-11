@@ -169,6 +169,12 @@ class PhpSlim_StatementExecutor
         return $result;
     }
 
+    public function assign($variable, $value)
+    {
+        $this->setSymbol($variable, $value);
+        return 'OK';
+    }
+
     private function convertCallbackToReflectionMethod($callback)
     {
         assert(is_array($callback) && is_callable($callback));
@@ -314,9 +320,9 @@ class PhpSlim_StatementExecutor
     {
         $names = array();
         foreach ($this->_modules as $moduleName) {
-            $names[] = $this->slimToPhpClass($moduleName . '.' . $className);
+            $names = array_merge($names, $this->slimToPhpClass($moduleName . '.' . $className));
         }
-        $names[] = $this->slimToPhpClass($className);
+        $names = array_merge($names, $this->slimToPhpClass($className));
         return array_reverse($names);
     }
 
@@ -328,7 +334,7 @@ class PhpSlim_StatementExecutor
     {
         $parts = preg_split('/\.|\:\:|\_/', $className);
         $converted = array_map('ucfirst', $parts);
-        return implode('\\', $converted);
+        return [implode('\\', $converted), implode('_', $converted)];
     }
 
     /**
