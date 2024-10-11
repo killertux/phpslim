@@ -17,18 +17,31 @@ class PhpSlim_Server
     public function run($port)
     {
         $this->_executor = new PhpSlim_ListExecutor();
-        $this->_socket = new PhpSlim_SocketService('localhost', $port);
+        if ($port === 1) {
+            $this->_socket = new PhpSlim_StdoutSocketService();
+            ob_start();
+        } else {
+            $this->_socket = new PhpSlim_SocketService('localhost', $port);
+        }
         if (!empty($this->_socketLogger)) {
             $this->_socket->setLogger($this->_socketLogger);
         }
         $this->_socket->init();
         $this->serveSlim();
         $this->_socket->close();
+        if ($port === 1) {
+            $contents = ob_get_contents();
+            ob_end_clean();
+            $lines = explode("\n", $contents);
+            foreach ($lines as $line) {
+                fwrite(STDERR, "SOUT :" . $line. "\n");
+            }
+        }
     }
 
     private function serveSlim()
     {
-        $this->_socket->write("Slim -- V0.4\n");
+        $this->_socket->write("Slim -- V0.5\n");
         while (true) {
             $command = $this->readCommand();
             if (strtolower($command) == 'bye') {
